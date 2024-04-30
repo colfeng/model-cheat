@@ -1,7 +1,6 @@
 import torch
 from tqdm import tqdm
 import numpy as np
-import json
 
 prompt_dict = {
     "standard": (
@@ -10,12 +9,7 @@ prompt_dict = {
         "Response:\n{Response}"
     )}
 
-def res_json_save(ppl, save_path):
-    ppl_value = {"ppl_value":ppl}
-    save_dic = json.dumps(ppl_value)
-    f = open(save_path, 'w')
-    f.write(save_dic)
-    f.close()
+
 
 def main_infer(data, model, tokenizer, device, device_ids, save_path):
 
@@ -35,7 +29,6 @@ def main_infer(data, model, tokenizer, device, device_ids, save_path):
             nlls.append((2 ** ce).cpu().numpy().tolist())
 
         ppl = np.mean(nlls)
-        res_json_save(ppl, save_path)
 
-        print("The PPL of this model in this datasets is:", ppl)
-        print("saved and finished!")
+        return ppl
+
